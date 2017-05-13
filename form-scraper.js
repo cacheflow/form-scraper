@@ -2,14 +2,22 @@ var _ = require("underscore");
 var when = require("when");
 var cheerio = require("cheerio");
 var nodeUrl = require("url");
-
+var isPromise = require('is-promise');
+var rp = require('request-promise')
 var ScrapingFormProvider = function(options) {this.options = options; };
 
 _.extend(ScrapingFormProvider, {
   provideForm: function (formId, url, pRequest) {
     var $;
     var that = this;
-    return pRequest.get(url)
+    var req = isPromise(pRequest.get(url))
+    if(!pRequest) {
+      throw new Error(C.LACK_OF_PROMISE + '\n' + '\n' + C.PROMISE_RECOMMENDATION + '\n')
+    }
+    if(!isPromise(req)) {
+      throw new Error(C.NOT_A_PROMMISE + '\n' + '\n' + C.PROMISE_RECOMMENDATION + '\n')
+    }
+    return req
       .then(fetchFormDataFromHttpResponse);
 
     function fetchFormDataFromHttpResponse(response) {
@@ -92,7 +100,10 @@ _.extend(FormSubmitter.prototype, {
   }
 })
 var C = {
-  ERROR_FORM_IS_ABSENT: "ERROR_FORM_IS_ABSENT"
+  ERROR_FORM_IS_ABSENT: "ERROR_FORM_IS_ABSENT",
+  NOT_A_PROMMISE: 'The request argument you passed is not a promise. Try passing a promisified version of request like:',
+  LACK_OF_PROMISE: 'You forgot to pass a request promise: Try passing a promisified version of request like:',
+  PROMISE_RECOMMENDATION: 'https://github.com/request/request-promise'
 }
 
 exports.ScrapingFormProvider = ScrapingFormProvider;

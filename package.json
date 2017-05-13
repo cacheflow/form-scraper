@@ -6,6 +6,7 @@
   "dependencies": {
     "when": "2.7.x",
     "promisified-request": "latest",
+    "is-promise": "^2.1.0",
     "underscore": "1.5.x",
     "cheerio": "0.12.x"
   },
