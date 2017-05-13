@@ -3,7 +3,6 @@ var when = require("when");
 var cheerio = require("cheerio");
 var nodeUrl = require("url");
 var isPromise = require('is-promise');
-var rp = require('request-promise')
 var ScrapingFormProvider = function(options) {this.options = options; };
 
 _.extend(ScrapingFormProvider, {
